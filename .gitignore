@@ -5,3 +5,4 @@
 .idea/modules.xml
 .idea/progressio.iml
 .idea/vcs.xml
+.progressio/progressio/__pycache__
