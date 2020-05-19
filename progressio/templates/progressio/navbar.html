@@ -19,11 +19,17 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{% url 'stringlength' %}">Calculate String Length</a>
           <a class="dropdown-item" href="{% url 'stringreverse' %}">Reverse String</a>
-            <a class="dropdown-item" href="{% url 'base32encode' %}">Base 32 Encode</a>
+          <a class="dropdown-item" href="{% url 'base32encode' %}">Base 32 Encode</a>
           <a class="dropdown-item" href="{% url 'base32decode' %}">Base 32 Decode</a>
           <a class="dropdown-item" href="{% url 'base64encode' %}">Base 64 Encode</a>
           <a class="dropdown-item" href="{% url 'base64decode' %}">Base 64 Decode</a>
+          <a class="dropdown-item" href="{% url 'stringtohex' %}">String To Hex</a>
+          <a class="dropdown-item" href="{% url 'hextostring' %}">Hex To String</a>
+          <a class="dropdown-item" href="{% url 'stringtobinary' %}">String To Binary</a>
+          <a class="dropdown-item" href="{% url 'binarytostring' %}">Binary To String</a>
+
           <div class="dropdown-divider"></div>
+
           <a class="dropdown-item" href="#">Something else here</a>
         </div>
       </li>

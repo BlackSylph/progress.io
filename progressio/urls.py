@@ -26,5 +26,9 @@ urlpatterns = [
     path('base64encode', EncodingDecoding.base64encode, name='base64encode'),
     path('base64decode', EncodingDecoding.base64decode, name='base64decode'),
     path('base32encode', EncodingDecoding.base32encode, name='base32encode'),
-    path('base32decode', EncodingDecoding.base32decode, name='base32decode')
+    path('base32decode', EncodingDecoding.base32decode, name='base32decode'),
+    path('stringtohex', EncodingDecoding.stringtohex, name='stringtohex'),
+    path('hextostring', EncodingDecoding.hextostring, name='hextostring'),
+    path('stringtobinary', EncodingDecoding.stringtobinary, name='stringtobinary'),
+    path('binarytostring', EncodingDecoding.binarytostring, name='binarytostring')
 ]
