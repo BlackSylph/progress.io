@@ -6,3 +6,4 @@
 .idea/progressio.iml
 .idea/vcs.xml
 progressio/__pycache__/
+*.pyc

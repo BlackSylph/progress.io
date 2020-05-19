@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('stringlength', views.stringLength, name='stringlength'),
+    path('stringreverse', views.stringReverse, name='stringreverse')
 ]
