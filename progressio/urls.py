@@ -15,11 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .Views.Developer import views
+from .Views.StringTransforms import views as StringTransforms
+from .Views.EncodingDecoding import views as EncodingDecoding
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
-    path('stringlength', views.stringLength, name='stringlength'),
-    path('stringreverse', views.stringReverse, name='stringreverse')
+    path('', StringTransforms.index, name='index'),
+    path('stringlength', StringTransforms.stringLength, name='stringlength'),
+    path('stringreverse', StringTransforms.stringReverse, name='stringreverse'),
+    path('base64encode', EncodingDecoding.base64encode, name='base64encode'),
+    path('base64decode', EncodingDecoding.base64decode, name='base64decode'),
+    path('base32encode', EncodingDecoding.base32encode, name='base32encode'),
+    path('base32decode', EncodingDecoding.base32decode, name='base32decode')
 ]
