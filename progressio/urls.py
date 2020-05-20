@@ -27,6 +27,7 @@ urlpatterns = [
     path('', StringTransforms.index, name='index'),
     path('stringlength', StringTransforms.stringLength, name='stringlength'),
     path('stringreverse', StringTransforms.stringReverse, name='stringreverse'),
+    path('substringoccurence', StringTransforms.substringOccurrence, name='substringoccurence'),
     path('base64encode', EncodingDecoding.base64encode, name='base64encode'),
     path('base64decode', EncodingDecoding.base64decode, name='base64decode'),
     path('base32encode', EncodingDecoding.base32encode, name='base32encode'),

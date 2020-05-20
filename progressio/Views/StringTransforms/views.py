@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from progressio.forms import StringForm
+from progressio.forms import *
 
 GLOBAL_PATH = 'progressio/'
 
@@ -18,7 +18,8 @@ def stringLength(request):
     else:
         form = StringForm()
 
-    return render(request, GLOBAL_PATH + 'Strings/stringlength.html', {'form': form})
+    return render(request, GLOBAL_PATH + 'StringTransforms/stringlength.html', {'form': form})
+
 
 def stringReverse(request):
     if request.method == 'POST':
@@ -29,4 +30,16 @@ def stringReverse(request):
     else:
         form = StringForm()
 
-    return render(request, GLOBAL_PATH + 'Strings/stringreverse.html', {'form': form})
+    return render(request, GLOBAL_PATH + 'StringTransforms/stringreverse.html', {'form': form})
+
+
+def substringOccurrence(request):
+    if request.method == 'POST':
+        form = StringParametersForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['output_string'] = form.cleaned_data.get('input_string').count(form.changed_data('input_parameters'))
+            form = StringParametersForm(form.cleaned_data)
+    else:
+        form = StringParametersForm()
+
+    return render(request, GLOBAL_PATH + 'StringTransforms/substringoccurence.html', {'form': form})
