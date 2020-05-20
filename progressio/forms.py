@@ -7,6 +7,12 @@ class StringForm(forms.Form):
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
+class StringParameterForm(forms.Form):
+    input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+    input_parameter = forms.CharField(widget=forms.Textarea(attrs={"rows": 1}))
+    output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
+
+
 class CaesarCipherForm(forms.Form):
 	CAESAR_CIPHER_AVAILABLE_SHIFTS = [
 		(1, 1), (2, 2),
