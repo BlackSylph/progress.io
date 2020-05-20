@@ -3,6 +3,8 @@ from django.shortcuts import render
 from progressio.forms import StringForm
 import base64
 import binascii
+import html.parser
+import urllib.parse
 
 GLOBAL_PATH = 'progressio/'
 
@@ -119,3 +121,99 @@ def binarytostring(request):
         form = StringForm()
 
     return render(request, GLOBAL_PATH + 'EncodingDecoding/binarytostring.html', {'form': form})
+
+
+def htmlencode(request):
+    if request.method == 'POST':
+        form = StringForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['output_string'] = html.escape(form.cleaned_data.get('input_string'))
+            form = StringForm(form.cleaned_data)
+    else:
+        form = StringForm()
+
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/htmlencode.html', {'form': form})
+
+
+def htmldecode(request):
+    if request.method == 'POST':
+        form = StringForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['output_string'] = html.unescape(form.cleaned_data.get('input_string'))
+            form = StringForm(form.cleaned_data)
+    else:
+        form = StringForm()
+
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/htmldecode.html', {'form': form})
+
+
+def urlencode(request):
+    if request.method == 'POST':
+        form = StringForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['output_string'] = urllib.parse.quote(form.cleaned_data.get('input_string'), safe='')
+            form = StringForm(form.cleaned_data)
+    else:
+        form = StringForm()
+
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urlencode.html', {'form': form})
+
+
+def urldecode(request):
+    if request.method == 'POST':
+        form = StringForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['output_string'] = urllib.parse.unquote(form.cleaned_data.get('input_string'))
+            form = StringForm(form.cleaned_data)
+    else:
+        form = StringForm()
+
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})
+
+
+def decimaltobinary(request):
+    if request.method == 'POST':
+        form = StringForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['output_string'] = bin(int(form.cleaned_data.get('input_string')))[2:]
+            form = StringForm(form.cleaned_data)
+    else:
+        form = StringForm()
+
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})
+
+
+def binarytodecimal(request):
+    if request.method == 'POST':
+        form = StringForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['output_string'] = int(form.cleaned_data.get('input_string'), 2)
+            form = StringForm(form.cleaned_data)
+    else:
+        form = StringForm()
+
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})
+
+
+def decimaltohex(request):
+    if request.method == 'POST':
+        form = StringForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['output_string'] = hex(int(form.cleaned_data.get('input_string')))
+            form = StringForm(form.cleaned_data)
+    else:
+        form = StringForm()
+
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})
+
+
+def hextodecimal(request):
+    if request.method == 'POST':
+        form = StringForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['output_string'] = int(form.cleaned_data.get('input_string'), 0)
+            form = StringForm(form.cleaned_data)
+    else:
+        form = StringForm()
+
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})

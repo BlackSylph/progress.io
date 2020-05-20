@@ -17,6 +17,10 @@ from django.contrib import admin
 from django.urls import path
 from .Views.StringTransforms import views as StringTransforms
 from .Views.EncodingDecoding import views as EncodingDecoding
+from .Views.Globals import views as Globals
+
+handler404 = Globals.handler404
+handler500 = Globals.handler500
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +34,13 @@ urlpatterns = [
     path('stringtohex', EncodingDecoding.stringtohex, name='stringtohex'),
     path('hextostring', EncodingDecoding.hextostring, name='hextostring'),
     path('stringtobinary', EncodingDecoding.stringtobinary, name='stringtobinary'),
-    path('binarytostring', EncodingDecoding.binarytostring, name='binarytostring')
+    path('binarytostring', EncodingDecoding.binarytostring, name='binarytostring'),
+    path('htmlencode', EncodingDecoding.htmlencode, name='htmlencode'),
+    path('htmldecode', EncodingDecoding.htmldecode, name='htmldecode'),
+    path('urlencode', EncodingDecoding.urlencode, name='urlencode'),
+    path('urldecode', EncodingDecoding.urldecode, name='urldecode'),
+    path('decimaltobinary', EncodingDecoding.decimaltobinary, name='decimaltobinary'),
+    path('binarytodecimal', EncodingDecoding.binarytodecimal, name='binarytodecimal'),
+    path('decimaltohex', EncodingDecoding.decimaltohex, name='decimaltohex'),
+    path('hextodecimal', EncodingDecoding.hextodecimal, name='hextodecimal')
 ]

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Progressio</a>
+  <a class="navbar-brand" href="{% url 'index' %}">Progressio</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -10,7 +10,7 @@
         <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="#">Crypto</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -23,10 +23,18 @@
           <a class="dropdown-item" href="{% url 'base32decode' %}">Base 32 Decode</a>
           <a class="dropdown-item" href="{% url 'base64encode' %}">Base 64 Encode</a>
           <a class="dropdown-item" href="{% url 'base64decode' %}">Base 64 Decode</a>
-          <a class="dropdown-item" href="{% url 'stringtohex' %}">String To Hex</a>
-          <a class="dropdown-item" href="{% url 'hextostring' %}">Hex To String</a>
-          <a class="dropdown-item" href="{% url 'stringtobinary' %}">String To Binary</a>
-          <a class="dropdown-item" href="{% url 'binarytostring' %}">Binary To String</a>
+          <a class="dropdown-item" href="{% url 'stringtohex' %}">String to Hex</a>
+          <a class="dropdown-item" href="{% url 'hextostring' %}">Hex to String</a>
+          <a class="dropdown-item" href="{% url 'stringtobinary' %}">String to Binary</a>
+          <a class="dropdown-item" href="{% url 'binarytostring' %}">Binary to String</a>
+          <a class="dropdown-item" href="{% url 'htmlencode' %}">String HTML Encode</a>
+          <a class="dropdown-item" href="{% url 'htmldecode' %}">String HTML Decode</a>
+          <a class="dropdown-item" href="{% url 'urlencode' %}">URL Encode</a>
+          <a class="dropdown-item" href="{% url 'urldecode' %}">URL Decode</a>
+          <a class="dropdown-item" href="{% url 'decimaltobinary' %}">Decimal to Binary</a>
+          <a class="dropdown-item" href="{% url 'binarytodecimal' %}">Binary to Decimal</a>
+          <a class="dropdown-item" href="{% url 'decimaltohex' %}">Decimal to Hex</a>
+          <a class="dropdown-item" href="{% url 'hextodecimal' %}">Hex to Decimal</a>
 
           <div class="dropdown-divider"></div>
 
