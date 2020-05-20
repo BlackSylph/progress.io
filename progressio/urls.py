@@ -18,6 +18,7 @@ from django.urls import path
 from .Views.StringTransforms import views as StringTransforms
 from .Views.EncodingDecoding import views as EncodingDecoding
 from .Views.Globals import views as Globals
+from .Views.Cryptography import views as Cryptography
 
 handler404 = Globals.handler404
 handler500 = Globals.handler500
@@ -43,5 +44,6 @@ urlpatterns = [
     path('decimaltobinary', EncodingDecoding.decimaltobinary, name='decimaltobinary'),
     path('binarytodecimal', EncodingDecoding.binarytodecimal, name='binarytodecimal'),
     path('decimaltohex', EncodingDecoding.decimaltohex, name='decimaltohex'),
-    path('hextodecimal', EncodingDecoding.hextodecimal, name='hextodecimal')
+    path('hextodecimal', EncodingDecoding.hextodecimal, name='hextodecimal'),
+    path('caesarcipher', Cryptography.caesarcipher, name='caesarcipher'),
 ]
