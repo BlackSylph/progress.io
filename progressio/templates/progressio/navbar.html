@@ -27,9 +27,14 @@
           String Operations
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'stringuppercase' %}">String to Uppercase</a>
+          <a class="dropdown-item" href="{% url 'stringlowercase' %}">String to Lowercase</a>
           <a class="dropdown-item" href="{% url 'stringlength' %}">String Length</a>
           <a class="dropdown-item" href="{% url 'stringreverse' %}">Reverse String</a>
           <a class="dropdown-item" href="{% url 'substringoccurence' %}">Substring Occurence</a>
+          <a class="dropdown-item" href="{% url 'wordcounter' %}">Word counter</a>
+          <a class="dropdown-item" href="{% url 'hextorgb' %}">Hex to RGB</a>
+          <a class="dropdown-item" href="{% url 'rgbtohex' %}">RGB to Hex</a>
           <a class="dropdown-item" href="{% url 'base32encode' %}">Base 32 Encode</a>
           <a class="dropdown-item" href="{% url 'base32decode' %}">Base 32 Decode</a>
           <a class="dropdown-item" href="{% url 'base64encode' %}">Base 64 Encode</a>

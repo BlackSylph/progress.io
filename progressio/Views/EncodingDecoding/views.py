@@ -1,6 +1,5 @@
-from django.http import HttpResponse
 from django.shortcuts import render
-from progressio.forms import StringForm
+from progressio.forms import StringForm, StringFormHexInput, StringFormRGBInput
 import base64
 import binascii
 import html.parser
@@ -217,3 +216,34 @@ def hextodecimal(request):
         form = StringForm()
 
     return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})
+
+
+def hextorgb(request):
+    if request.method == 'POST':
+        form = StringFormHexInput(request.POST)
+        if form.is_valid():
+            input_string = form.cleaned_data.get('input_string').lstrip('#')
+            lv = len(input_string)
+            tup = tuple(int(input_string[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+            form.cleaned_data['output_string'] = ''.join(map(str, tup))
+            form = StringFormHexInput(form.cleaned_data)
+    else:
+        form = StringFormHexInput()
+
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/hextorgb.html', {'form': form})
+
+
+def rgbtohex(request):
+    if request.method == 'POST':
+        form = StringFormRGBInput(request.POST)
+        if form.is_valid():
+            input_red = form.cleaned_data.get('input_red')
+            input_green = form.cleaned_data.get('input_green')
+            input_blue = form.cleaned_data.get('input_blue')
+            rgb = (input_red, input_green, input_blue)
+            form.cleaned_data['output_string'] = '#%02x%02x%02x' % rgb
+            form = StringFormRGBInput(form.cleaned_data)
+    else:
+        form = StringFormRGBInput()
+
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/rgbtohex.html', {'form': form})
