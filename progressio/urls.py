@@ -46,5 +46,7 @@ urlpatterns = [
     path('decimaltohex', EncodingDecoding.decimaltohex, name='decimaltohex'),
     path('hextodecimal', EncodingDecoding.hextodecimal, name='hextodecimal'),
     path('caesarcipher', Cryptography.caesarcipher, name='caesarcipher'),
-    path('enigmamachine', Cryptography.enigmamachine, name='enigmamachine')
+    path('enigmamachine', Cryptography.enigmamachine, name='enigmamachine'),
+    path('affinecipherencrypt', Cryptography.affinecipherencrypt, name='affinecipherencrypt'),
+    path('affinecipherdecrypt', Cryptography.affinecipherdecrypt, name='affinecipherdecrypt')
 ]

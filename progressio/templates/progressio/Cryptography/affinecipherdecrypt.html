@@ -18,15 +18,12 @@
 
               <div class="row">
                   <div class="col-sm-6">
-                    {{ form.wheel|as_crispy_field }}
+                    {{ form.slope|as_crispy_field }}
                   </div>
                   <div class="col-sm-6">
-                    {{ form.ringsetting|as_crispy_field }}
+                    {{ form.intercept|as_crispy_field }}
                   </div>
               </div>
-
-              {{ form.plugboard|as_crispy_field }}
-              {{ form.reflectors|as_crispy_field }}
 
               <div class="text-center">
                 <button type="submit" class="btn btn-primary">Calculate</button>

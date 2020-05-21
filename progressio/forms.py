@@ -50,8 +50,34 @@ class EnigmaMachineForm(forms.Form):
 		('Reflector C', 'Reflector C')
 	]
 
+	RING_SETTINGS = [
+		('A', 'A'), ('B', 'B'),
+		('C', 'C'), ('D', 'D'),
+		('E', 'E'), ('F', 'F'),
+		('G', 'G'), ('H', 'H'),
+		('I', 'I'), ('J', 'J'),
+		('K', 'K'), ('L', 'L'),
+		('M', 'M'), ('N', 'N'),
+		('O', 'O'), ('P', 'P'),
+		('Q', 'Q'), ('R', 'R'),
+		('S', 'S'), ('T', 'T'),
+		('U', 'U'), ('V', 'V'),
+		('W', 'W'), ('X', 'X'),
+		('Y', 'Y'), ('Z', 'Z')
+	]
+
 	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+
 	wheel = forms.ChoiceField(choices=WHEEL_NAMES)
+	ringsetting = forms.ChoiceField(choices=RING_SETTINGS)
+
 	plugboard = forms.CharField(widget=forms.Textarea(attrs={"rows": 1}))
 	reflectors = forms.ChoiceField(choices=REFLECTOR_NAMES)
+	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
+
+
+class AffineCipherForm(forms.Form):
+	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+	slope = forms.CharField()
+	intercept = forms.CharField()
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
