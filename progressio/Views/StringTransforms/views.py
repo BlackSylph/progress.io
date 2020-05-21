@@ -35,11 +35,11 @@ def stringReverse(request):
 
 def substringOccurrence(request):
     if request.method == 'POST':
-        form = StringParametersForm(request.POST)
+        form = StringParameterForm(request.POST)
         if form.is_valid():
-            form.cleaned_data['output_string'] = form.cleaned_data.get('input_string').count(form.changed_data('input_parameters'))
-            form = StringParametersForm(form.cleaned_data)
+            form.cleaned_data['output_string'] = form.cleaned_data.get('input_string').count(form.cleaned_data.get('input_parameter'))
+            form = StringParameterForm(form.cleaned_data)
     else:
-        form = StringParametersForm()
+        form = StringParameterForm()
 
     return render(request, GLOBAL_PATH + 'StringTransforms/substringoccurence.html', {'form': form})
