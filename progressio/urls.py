@@ -53,5 +53,6 @@ urlpatterns = [
     path('caesarcipher', Cryptography.caesarcipher, name='caesarcipher'),
     path('enigmamachine', Cryptography.enigmamachine, name='enigmamachine'),
     path('affinecipherencrypt', Cryptography.affinecipherencrypt, name='affinecipherencrypt'),
-    path('affinecipherdecrypt', Cryptography.affinecipherdecrypt, name='affinecipherdecrypt')
+    path('affinecipherdecrypt', Cryptography.affinecipherdecrypt, name='affinecipherdecrypt'),
+    path('bifidencrypt', Cryptography.bifidencrypt, name='bifidencrypt')
 ]
