@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from progressio.forms import CaesarCipherForm
+from progressio.forms import CaesarCipherForm, StringForm, StringParameterForm
 from progressio.forms import EnigmaMachineForm
 from progressio.forms import AffineCipherForm
 from progressio.forms import BifidCipherForm
@@ -99,9 +99,131 @@ def bifidencrypt(request):
 
 	return render(request, GLOBAL_PATH + 'Cryptography/bifidencrypt.html', {'form': form})
 
+
+def rot13cipher(request):
+	if request.method == 'POST':
+		form = StringForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			form.cleaned_data['output_string'] = caesarcipherencrypt(plaintext, 13)
+			form = StringForm(form.cleaned_data)
+	else:
+		form = StringForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/rot13cipher.html', {'form': form})
+
+
+def a1z26cipherencrypt(request):
+	if request.method == 'POST':
+		form = StringForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			form.cleaned_data['output_string'] = a1z26_encrypt(plaintext)
+			form = StringForm(form.cleaned_data)
+	else:
+		form = StringForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/a1z26cipherencrypt.html', {'form': form})
+
+
+def a1z26cipherdecrypt(request):
+	if request.method == 'POST':
+		form = StringForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			form.cleaned_data['output_string'] = a1z26_decrypt(plaintext)
+			form = StringForm(form.cleaned_data)
+	else:
+		form = StringForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/a1z26cipherdecrypt.html', {'form': form})
+
+
+def vigenerecipherencrypt(request):
+	if request.method == 'POST':
+		form = StringParameterForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			key = form.cleaned_data.get('input_parameter')
+			form.cleaned_data['output_string'] = vigenere_encrypt(plaintext, key)
+			form = StringParameterForm(form.cleaned_data)
+	else:
+		form = StringParameterForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/vigenerecipherencrypt.html', {'form': form})
+
+
+def vigenerecipherdecrypt(request):
+	if request.method == 'POST':
+		form = StringParameterForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			key = form.cleaned_data.get('input_parameter')
+			form.cleaned_data['output_string'] = vigenere_decrypt(plaintext, key)
+			form = StringParameterForm(form.cleaned_data)
+	else:
+		form = StringParameterForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/vigenerecipherdecrypt.html', {'form': form})
 '''
 HELPER FUNCTIONS
 '''
+
+
+def vigenere_encrypt(plaintext, key):
+	plaintext = plaintext.lower()
+	key = key.lower()
+
+	# Make key same amount of characters with plaintext
+	while (len(plaintext) - len(key)) > len(key):
+		key += key
+	for i in range(0, len(plaintext) - len(key)):
+		key += key[i]
+
+	plaintext_int = [ord(i) for i in plaintext]
+	key_int = [ord(i) for i in key]
+	ciphertext = ''
+	for i in range(len(plaintext_int)):
+		ciphertext += chr(((plaintext_int[i] - 97) + (key_int[i] - 97)) + 97)
+	return ciphertext
+
+
+def vigenere_decrypt(ciphertext, key):
+	ciphertext = ciphertext.lower()
+	key = key.lower()
+
+	# Make key same amount of characters with plaintext
+	while (len(ciphertext) - len(key)) > len(key):
+		key += key
+	for i in range(0, len(ciphertext) - len(key)):
+		key += key[i]
+
+	ciphertext_int = [ord(i) for i in ciphertext]
+	key_int = [ord(i) for i in key]
+	plaintext = ''
+	for i in range(len(ciphertext_int)):
+		plaintext += chr(((ciphertext_int[i] - 97) - (key_int[i] - 97)) + 97)
+	return plaintext
+
+
+def a1z26_encrypt(plaintext):
+	ciphertext = ""
+	plaintext = plaintext.lower()  # Format to Lowercase
+	plaintext = "".join(plaintext.split())  # Remove spaces from string
+	for i in range(0, len(plaintext)):  # Loop through each character of string
+		char = ord(plaintext[i]) - 96  # Convert character to numeric 1 - 26
+		if 0 < char <= 26: ciphertext += str(char) + " "  # Store value in 'string' variable
+	return ciphertext  # Return cipher string
+
+
+def a1z26_decrypt(ciphertext):
+	# Decrypt string by converting each number to a letter
+	plaintext = ""  # Placeholder variable
+	data = ciphertext.split()  # Split string at " "
+	for char in data:  # Loop through each character
+		char = chr(int(char) + 96)  # Convert number to letter
+		plaintext += char  # Add character to string
+	return plaintext  # Return plain string
 
 
 def caesarcipherencrypt(plaintext, shift):

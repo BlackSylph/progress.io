@@ -54,5 +54,10 @@ urlpatterns = [
     path('enigmamachine', Cryptography.enigmamachine, name='enigmamachine'),
     path('affinecipherencrypt', Cryptography.affinecipherencrypt, name='affinecipherencrypt'),
     path('affinecipherdecrypt', Cryptography.affinecipherdecrypt, name='affinecipherdecrypt'),
-    path('bifidencrypt', Cryptography.bifidencrypt, name='bifidencrypt')
+    path('bifidencrypt', Cryptography.bifidencrypt, name='bifidencrypt'),
+    path('rot13cipher', Cryptography.rot13cipher, name='rot13cipher'),
+    path('a1z26cipherencrypt', Cryptography.a1z26cipherencrypt, name='a1z26cipherencrypt'),
+    path('a1z26cipherdecrypt', Cryptography.a1z26cipherdecrypt, name='a1z26cipherdecrypt'),
+    path('vigenerecipherencrypt', Cryptography.vigenerecipherencrypt, name='vigenerecipherencrypt'),
+    path('vigenerecipherdecrypt', Cryptography.vigenerecipherdecrypt, name='vigenerecipherdecrypt')
 ]

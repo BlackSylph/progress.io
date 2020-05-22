@@ -12,12 +12,12 @@ class StringParameterForm(forms.Form):
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class StringFormHexInput(forms.Form):
+class StringHexInputForm(forms.Form):
 	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}), validators=[validator_hex_value])
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class StringFormRGBInput(forms.Form):
+class StringRGBInputForm(forms.Form):
 	input_red = forms.IntegerField(widget=forms.Textarea(attrs={"rows": 1}))
 	input_green = forms.IntegerField(widget=forms.Textarea(attrs={"rows": 1}))
 	input_blue = forms.IntegerField(widget=forms.Textarea(attrs={"rows": 1}))
