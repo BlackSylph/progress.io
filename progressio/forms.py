@@ -103,3 +103,24 @@ class BifidCipherForm(forms.Form):
 	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
 	key = forms.CharField(validators=[validator_no_duplicates, validator_no_more_than_26_characters])
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
+
+
+class HashFunctionForm(forms.Form):
+	HASH_FUNCTION_CHOICES = [
+		('sha-1', 'SHA-1'),
+		('sha-256', 'SHA-256'),
+		('sha-384', 'SHA-384'),
+		('sha-512', 'SHA-512'),
+		('md5', 'MD5')
+	]
+
+	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+	hash = forms.ChoiceField(choices=HASH_FUNCTION_CHOICES)
+	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
+
+
+class HmacForm(forms.Form):
+	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+	hash = forms.ChoiceField(choices=HashFunctionForm.HASH_FUNCTION_CHOICES)
+	key = forms.CharField()
+	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))

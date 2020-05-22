@@ -4,7 +4,11 @@ from progressio.forms import CaesarCipherForm, StringForm, StringParameterForm
 from progressio.forms import EnigmaMachineForm
 from progressio.forms import AffineCipherForm
 from progressio.forms import BifidCipherForm
+from progressio.forms import HashFunctionForm
+from progressio.forms import HmacForm
 from python_enigma import enigma
+import hashlib
+import hmac as hmac_import
 import json
 
 GLOBAL_PATH = 'progressio/'
@@ -12,6 +16,7 @@ GLOBAL_PATH = 'progressio/'
 '''
 REQUESTS
 '''
+
 
 def caesarcipher(request):
 	if request.method == 'POST':
@@ -100,6 +105,21 @@ def bifidencrypt(request):
 	return render(request, GLOBAL_PATH + 'Cryptography/bifidencrypt.html', {'form': form})
 
 
+def bifiddecrypt(request):
+	if request.method == 'POST':
+		form = BifidCipherForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			key = form.cleaned_data.get('key')
+			table = buildpolybiussquare(key)
+			form.cleaned_data['output_string'] = bifiddecryptmessage(table, plaintext)
+			form = BifidCipherForm(form.cleaned_data)
+	else:
+		form = BifidCipherForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/bifiddecrypt.html', {'form': form})
+
+
 def rot13cipher(request):
 	if request.method == 'POST':
 		form = StringForm(request.POST)
@@ -165,9 +185,67 @@ def vigenerecipherdecrypt(request):
 		form = StringParameterForm()
 
 	return render(request, GLOBAL_PATH + 'Cryptography/vigenerecipherdecrypt.html', {'form': form})
+
+
+def hashfunction(request):
+	if request.method == 'POST':
+		form = HashFunctionForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			func = form.cleaned_data.get('hash')
+			form.cleaned_data['output_string'] = hash_based_on_input(func, plaintext)
+			form = HashFunctionForm(form.cleaned_data)
+	else:
+		form = HashFunctionForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/hashfunction.html', {'form': form})
+
+
+def hmac(request):
+	if request.method == 'POST':
+		form = HmacForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			func = form.cleaned_data.get('hash')
+			key = form.cleaned_data.get('key')
+			form.cleaned_data['output_string'] = hmac_based_on_input(func, plaintext, key)
+			form = HmacForm(form.cleaned_data)
+	else:
+		form = HmacForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/hmac.html', {'form': form})
+
 '''
 HELPER FUNCTIONS
 '''
+
+
+def hash_based_on_input(func, input):
+	if func == 'sha-256':
+		val = hashlib.sha256(input.encode('utf-8'))
+	elif func == 'sha-1':
+		val = hashlib.sha1(input.encode('utf-8'))
+	elif func == 'md5':
+		val = hashlib.md5(input.encode('utf-8'))
+	elif func == 'sha-384':
+		val = hashlib.sha384(input.encode('utf-8'))
+	elif func == 'sha-512':
+		val = hashlib.sha512(input.encode('utf-8'))
+	return val.hexdigest()
+
+
+def hmac_based_on_input(func, input, key):
+	if func == 'sha-256':
+		val = hmac_import.new(key.encode('utf-8'), input.encode('utf-8'), hashlib.sha256)
+	elif func == 'sha-1':
+		val = hmac_import.new(key.encode('utf-8'), input.encode('utf-8'), hashlib.sha1)
+	elif func == 'md5':
+		val = hmac_import.new(key.encode('utf-8'), input.encode('utf-8'), hashlib.md5)
+	elif func == 'sha-384':
+		val = hmac_import.new(key.encode('utf-8'), input.encode('utf-8'), hashlib.sha384)
+	elif func == 'sha-512':
+		val = hmac_import.new(key.encode('utf-8'), input.encode('utf-8'), hashlib.sha512)
+	return val.hexdigest()
 
 
 def vigenere_encrypt(plaintext, key):
@@ -277,7 +355,7 @@ def affine_decrypt(cipher, key):
 
 
 def buildpolybiussquare(key):
-	alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ' # I and J are the same for polybius square
+	alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'  # I and J are the same for polybius square
 	alphabet_list = [char for char in alphabet]
 
 	table = [[0] * 5 for row in range(5)]
@@ -296,8 +374,8 @@ def buildpolybiussquare(key):
 		for x in range(5):
 			for y in range(5):
 				try:
-					table[x][y] = key[x*5 + y]
-					alphabet_list.remove(key[x*5 + y])
+					table[x][y] = key[x * 5 + y]
+					alphabet_list.remove(key[x * 5 + y])
 				except IndexError:
 					table[x][y] = 0
 
@@ -310,10 +388,11 @@ def buildpolybiussquare(key):
 		return table
 
 
+# TODO: Maybe this needs optimization, need to rethink
 def bifidencryptmessage(table, words):
 	array = [[0] * len(words) for row in range(2)]
 	words = words.upper()
-	
+
 	for index in range(len(words)):
 		for row in range(len(table)):
 			print(table[row])
@@ -329,5 +408,28 @@ def bifidencryptmessage(table, words):
 
 	for i in coords:
 		new_text += str(table[i[0]][i[1]])
+
+	return new_text
+
+
+# TODO: Maybe this needs optimization, need to rethink
+def bifiddecryptmessage(table, words):
+	ciphertext = [[0] * len(words) for row in range(2)]
+	array = []
+	words = words.upper()
+
+	for index in range(len(words)):
+		for row in range(len(table)):
+
+			if words[index] in table[row]:
+				array.append(row)
+				array.append(table[row].index(words[index]))
+
+	ciphertext[0] = array[:len(array) // 2]
+	ciphertext[1] = array[len(array) // 2:]
+
+	new_text = ''
+	for index in range(len(words)):
+		new_text += table[ciphertext[0][index]][ciphertext[1][index]]
 
 	return new_text
