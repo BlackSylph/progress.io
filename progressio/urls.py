@@ -62,5 +62,15 @@ urlpatterns = [
     path('vigenerecipherencrypt', Cryptography.vigenerecipherencrypt, name='vigenerecipherencrypt'),
     path('vigenerecipherdecrypt', Cryptography.vigenerecipherdecrypt, name='vigenerecipherdecrypt'),
     path('hashfunction', Cryptography.hashfunction, name='hashfunction'),
-    path('hmac', Cryptography.hmac, name='hmac')
+    path('hmac', Cryptography.hmac, name='hmac'),
+    path('tapcodeencrypt', Cryptography.tapcodeencrypt, name='tapcodeencrypt'),
+    path('tapcodedecrypt', Cryptography.tapcodedecrypt, name='tapcodedecrypt'),
+    path('nihilistencrypt', Cryptography.nihilistencrypt, name='nihilistencrypt'),
+    path('nihilistdecrypt', Cryptography.nihilistdecrypt, name='nihilistdecrypt'),
+    path('trifidencrypt', Cryptography.trifidencrypt, name='trifidencrypt'),
+    path('trifiddecrypt', Cryptography.trifiddecrypt, name='trifiddecrypt'),
+    path('rc4encrypt', Cryptography.rc4encrypt, name='rc4encrypt'),
+    path('rc4decrypt', Cryptography.rc4decrypt, name='rc4decrypt'),
+    path('aesencrypt', Cryptography.aesencrypt, name='aesencrypt'),
+    path('aesdecrypt', Cryptography.aesdecrypt, name='aesdecrypt')
 ]

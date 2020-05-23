@@ -1,12 +1,23 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from base64 import b64encode, b64decode
+
 from progressio.forms import CaesarCipherForm, StringForm, StringParameterForm
 from progressio.forms import EnigmaMachineForm
 from progressio.forms import AffineCipherForm
 from progressio.forms import BifidCipherForm
 from progressio.forms import HashFunctionForm
 from progressio.forms import HmacForm
+from progressio.forms import RC4Form
+from progressio.forms import AesForm
+from progressio.forms import TapForm
+
 from python_enigma import enigma
+from Crypto.Cipher import ARC4
+from Crypto.Cipher import AES
+from secretpy import Trifid, Nihilist, alphabets, CryptMachine
+from secretpy.cmdecorators import UpperCase, SaveSpaces, NoSpaces
+
 import hashlib
 import hmac as hmac_import
 import json
@@ -215,6 +226,227 @@ def hmac(request):
 
 	return render(request, GLOBAL_PATH + 'Cryptography/hmac.html', {'form': form})
 
+
+def tapcodeencrypt(request):
+	if request.method == 'POST':
+		form = TapForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string').upper()
+			tap = form.cleaned_data.get('tap')
+			table = buildpolybiussquare(None, 'ABCDEFGHIJLMNOPQRSTUVWXYZ')
+			ciphertext = ''
+			print(table)
+			for char in plaintext:
+				for i, sub_list in enumerate(table):
+					if char in sub_list:
+						ciphertext += tap * (i + 1)
+						ciphertext += ' '
+						ciphertext += tap * (sub_list.index(char) + 1)
+						ciphertext += ' '
+
+			form.cleaned_data['output_string'] = ciphertext
+			form = TapForm(form.cleaned_data)
+	else:
+		form = TapForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/tapcodeencrypt.html', {'form': form})
+
+
+def pairwise(iterable):
+	a = iter(iterable)
+	return zip(a, a)
+
+
+def tapcodedecrypt(request):
+	if request.method == 'POST':
+		form = TapForm(request.POST)
+		if form.is_valid():
+			ciphertext = form.cleaned_data.get('input_string').split(' ')
+			tap = form.cleaned_data.get('tap')
+			table = buildpolybiussquare(None, 'ABCDEFGHIJLMNOPQRSTUVWXYZ')
+
+			plaintext = ''
+			for x, y in pairwise(ciphertext):
+				plaintext += table[len(x)-1][len(y)-1]
+
+			form.cleaned_data['output_string'] = plaintext
+			form = TapForm(form.cleaned_data)
+	else:
+		form = TapForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/tapcodedecrypt.html', {'form': form})
+
+
+def nihilistencrypt(request):
+	if request.method == 'POST':
+		form = BifidCipherForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			key = form.cleaned_data.get('key')
+			cipher = Nihilist()
+			cm = CryptMachine(cipher, key)
+			cm = SaveSpaces(cm)
+			alphabet = alphabets.ENGLISH
+			form.cleaned_data['output_string'] = cm.encrypt(plaintext)
+			form = BifidCipherForm(form.cleaned_data)
+	else:
+		form = BifidCipherForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/nihilistencrypt.html', {'form': form})
+
+
+def nihilistdecrypt(request):
+	if request.method == 'POST':
+		form = BifidCipherForm(request.POST)
+		if form.is_valid():
+			ciphertext = form.cleaned_data.get('input_string')
+			key = form.cleaned_data.get('key')
+			cipher = Nihilist()
+			cm = CryptMachine(cipher, key)
+			alphabet = alphabets.ENGLISH
+			form.cleaned_data['output_string'] = cm.decrypt(ciphertext)
+			form = BifidCipherForm(form.cleaned_data)
+	else:
+		form = BifidCipherForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/nihilistdecrypt.html', {'form': form})
+
+
+def trifidencrypt(request):
+	if request.method == 'POST':
+		form = BifidCipherForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			key = 5
+			cipher = Trifid()
+			cm = CryptMachine(cipher, key)
+
+			alphabet = [
+				u"e", u"p", u"s",
+				u"d", u"u", u"c",
+				u"v", u"w", u"y",
+
+				u"m", u".", u"z",
+				u"l", u"k", u"x",
+				u"n", u"b", u"t",
+
+				u"f", u"g", u"o",
+				u"r", u"i", u"j",
+				u"h", u"a", u"q",
+			]
+
+			cm.set_alphabet(alphabet)
+			form.cleaned_data['output_string'] = cm.encrypt(plaintext)
+			form = BifidCipherForm(form.cleaned_data)
+	else:
+		form = BifidCipherForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/trifidencrypt.html', {'form': form})
+
+
+def trifiddecrypt(request):
+	if request.method == 'POST':
+		form = BifidCipherForm(request.POST)
+		if form.is_valid():
+			ciphertext = form.cleaned_data.get('input_string')
+			key = 5
+			cipher = Trifid()
+			cm = CryptMachine(cipher, key)
+
+			alphabet = [
+				u"e", u"p", u"s",
+				u"d", u"u", u"c",
+				u"v", u"w", u"y",
+
+				u"m", u".", u"z",
+				u"l", u"k", u"x",
+				u"n", u"b", u"t",
+
+				u"f", u"g", u"o",
+				u"r", u"i", u"j",
+				u"h", u"a", u"q",
+			]
+
+			cm.set_alphabet(alphabet)
+			form.cleaned_data['output_string'] = cm.encrypt(ciphertext)
+			form = BifidCipherForm(form.cleaned_data)
+	else:
+		form = BifidCipherForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/trifiddecrypt.html', {'form': form})
+
+
+# RC4 and AES are wrong, need to recheck
+def rc4encrypt(request):
+	if request.method == 'POST':
+		form = RC4Form(request.POST)  # Use bifid cipher here because both only need an input, key and output string
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string').encode()
+			key = form.cleaned_data.get('key').encode()
+			arc4 = ARC4.new(key)
+			form.cleaned_data['output_string'] = arc4.encrypt(plaintext).hex()
+			form = RC4Form(form.cleaned_data)
+	else:
+		form = RC4Form()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/rc4encrypt.html', {'form': form})
+
+
+def rc4decrypt(request):
+	if request.method == 'POST':
+		form = RC4Form(request.POST)  # Use bifid cipher here because both only need an input, key and output string
+		if form.is_valid():
+			ciphertext = form.cleaned_data.get('input_string').encode()
+			key = form.cleaned_data.get('key').encode()
+			arc4 = ARC4.new(key)
+			form.cleaned_data['output_string'] = arc4.decrypt(ciphertext).hex()
+			form = RC4Form(form.cleaned_data)
+	else:
+		form = RC4Form()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/rc4decrypt.html', {'form': form})
+
+
+def aesencrypt(request):
+	if request.method == 'POST':
+		form = AesForm(request.POST)  # Use bifid cipher here because both only need an input, key and output string
+		if form.is_valid():
+			iv = 'IVIVIVIVIVIVIVIV'
+			iv = str.encode(iv)
+
+			plaintext = form.cleaned_data.get('input_string')
+			plaintext = str.encode(plaintext)
+			plaintext = plaintext + (AES.block_size - (len(plaintext) % AES.block_size)) * b'\x00'
+
+			key = form.cleaned_data.get('key')
+			key = str.encode(key)
+
+			aes = AES.new(key, AES.MODE_CBC, iv)
+			ciphertext = aes.encrypt(plaintext)
+
+			form.cleaned_data['output_string'] = ciphertext.hex()
+			form = AesForm(form.cleaned_data)
+	else:
+		form = AesForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/aesencrypt.html', {'form': form})
+
+
+def aesdecrypt(request):
+	if request.method == 'POST':
+		form = AesForm(request.POST)  # Use bifid cipher here because both only need an input, key and output string
+		if form.is_valid():
+			ciphertext = form.cleaned_data.get('input_string').encode()
+			key = form.cleaned_data.get('key').encode()
+			arc4 = ARC4.new(key)
+			form.cleaned_data['output_string'] = arc4.decrypt(ciphertext).hex()
+			form = AesForm(form.cleaned_data)
+	else:
+		form = AesForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/aesdecrypt.html', {'form': form})
+
+
 '''
 HELPER FUNCTIONS
 '''
@@ -354,8 +586,9 @@ def affine_decrypt(cipher, key):
 	return ''.join([chr(((modinv(key[0], 26) * (ord(c) - ord('A') - key[1])) % 26) + ord('A')) for c in cipher])
 
 
-def buildpolybiussquare(key):
-	alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'  # I and J are the same for polybius square
+def buildpolybiussquare(key=None, alphabet=None):
+	if alphabet is None:
+		alphabet = 'ABCDEFGHIKLMNOPQRSTUVWXYZ'  # I and J are the same for polybius square
 	alphabet_list = [char for char in alphabet]
 
 	table = [[0] * 5 for row in range(5)]

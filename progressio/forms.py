@@ -124,3 +124,53 @@ class HmacForm(forms.Form):
 	hash = forms.ChoiceField(choices=HashFunctionForm.HASH_FUNCTION_CHOICES)
 	key = forms.CharField()
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
+
+
+class TapForm(forms.Form):
+	TAP_CHOICES = [
+		('.', '.'),
+		('-', '-'),
+		('_', '_'),
+		('*', '*')
+	]
+
+	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+	tap = forms.ChoiceField(choices=TAP_CHOICES)
+	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
+
+
+class RC4Form(forms.Form):
+	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+	key = forms.CharField()
+	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
+
+
+class AesForm(forms.Form):
+	AES_BLOCK_SIZES = [
+		('aes-128', 'AES-128'),
+		('aes-192', 'AES-192'),
+		('aes-256', 'AES-256')
+	]
+
+	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+	mode = forms.ChoiceField(choices=AES_BLOCK_SIZES)
+	key = forms.CharField()
+	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
+
+	def clean(self):
+		cleaned_data = super().clean()
+		mode = cleaned_data.get('mode')
+		key = cleaned_data.get('key')
+		print(mode)
+		if mode == 'aes-128' and len(key) > 16:
+			msg = 'Key length cannot be more than 16 bytes'
+			self.add_error('key', msg)
+			raise forms.ValidationError('Key length cannot be more than 16 bytes')
+		elif mode == 'aes-192' and len(key) > 24:
+			msg = 'Key length cannot be more than 24 bytes'
+			self.add_error('key', msg)
+			raise forms.ValidationError('Key length cannot be more than 24 bytes')
+		elif mode == 'aes-256' and len(key) > 32:
+			msg = 'Key length cannot be more than 32 bytes'
+			self.add_error('key', msg)
+			raise forms.ValidationError('Key length cannot be more than 32 bytes')
