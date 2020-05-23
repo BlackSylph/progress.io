@@ -1,30 +1,32 @@
 from progressio.validators import *
 
 
-class StringForm(forms.Form):
+class BaseForm(forms.Form):
 	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class StringParameterForm(forms.Form):
-	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+class StringForm(BaseForm):
+	pass
+
+
+class StringParameterForm(BaseForm):
 	input_parameter = forms.CharField(widget=forms.Textarea(attrs={"rows": 1}))
-	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class StringHexInputForm(forms.Form):
+class StringHexInputForm(BaseForm):
 	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}), validators=[validator_hex_value])
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class StringRGBInputForm(forms.Form):
+class StringRGBInputForm(BaseForm):
 	input_red = forms.IntegerField(widget=forms.Textarea(attrs={"rows": 1}))
 	input_green = forms.IntegerField(widget=forms.Textarea(attrs={"rows": 1}))
 	input_blue = forms.IntegerField(widget=forms.Textarea(attrs={"rows": 1}))
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class CaesarCipherForm(forms.Form):
+class CaesarCipherForm(BaseForm):
 	CAESAR_CIPHER_AVAILABLE_SHIFTS = [
 		(1, 1), (2, 2),
 		(3, 3), (4, 4),
@@ -40,12 +42,10 @@ class CaesarCipherForm(forms.Form):
 		(23, 23), (24, 24),
 	]
 
-	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
 	shift = forms.ChoiceField(choices=CAESAR_CIPHER_AVAILABLE_SHIFTS)
-	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class EnigmaMachineForm(forms.Form):
+class EnigmaMachineForm(BaseForm):
 	WHEEL_NAMES = [
 		('IC', 'IC'), ('IIC', 'IIC'),
 		('IIIC', 'IIIC'), ('IR', 'IR'),
@@ -82,30 +82,23 @@ class EnigmaMachineForm(forms.Form):
 		('Y', 'Y'), ('Z', 'Z')
 	]
 
-	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
-
 	wheel = forms.ChoiceField(choices=WHEEL_NAMES)
 	ringsetting = forms.ChoiceField(choices=RING_SETTINGS)
 
 	plugboard = forms.CharField(widget=forms.Textarea(attrs={"rows": 1}))
 	reflectors = forms.ChoiceField(choices=REFLECTOR_NAMES)
-	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class AffineCipherForm(forms.Form):
-	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+class AffineCipherForm(BaseForm):
 	slope = forms.CharField()
 	intercept = forms.CharField()
-	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class BifidCipherForm(forms.Form):
-	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+class BifidCipherForm(BaseForm):
 	key = forms.CharField(validators=[validator_no_duplicates, validator_no_more_than_26_characters])
-	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class HashFunctionForm(forms.Form):
+class HashFunctionForm(BaseForm):
 	HASH_FUNCTION_CHOICES = [
 		('sha-1', 'SHA-1'),
 		('sha-256', 'SHA-256'),
@@ -114,19 +107,15 @@ class HashFunctionForm(forms.Form):
 		('md5', 'MD5')
 	]
 
-	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
 	hash = forms.ChoiceField(choices=HASH_FUNCTION_CHOICES)
-	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class HmacForm(forms.Form):
-	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+class HmacForm(BaseForm):
 	hash = forms.ChoiceField(choices=HashFunctionForm.HASH_FUNCTION_CHOICES)
 	key = forms.CharField()
-	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class TapForm(forms.Form):
+class TapForm(BaseForm):
 	TAP_CHOICES = [
 		('.', '.'),
 		('-', '-'),
@@ -134,28 +123,22 @@ class TapForm(forms.Form):
 		('*', '*')
 	]
 
-	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
 	tap = forms.ChoiceField(choices=TAP_CHOICES)
-	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class RC4Form(forms.Form):
-	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
+class RC4Form(BaseForm):
 	key = forms.CharField()
-	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class AesForm(forms.Form):
+class AesForm(BaseForm):
 	AES_BLOCK_SIZES = [
 		('aes-128', 'AES-128'),
 		('aes-192', 'AES-192'),
 		('aes-256', 'AES-256')
 	]
 
-	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}))
 	mode = forms.ChoiceField(choices=AES_BLOCK_SIZES)
 	key = forms.CharField()
-	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 	def clean(self):
 		cleaned_data = super().clean()
