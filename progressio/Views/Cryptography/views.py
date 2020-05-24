@@ -21,6 +21,7 @@ from secretpy.cmdecorators import UpperCase, SaveSpaces, NoSpaces
 import hashlib
 import hmac as hmac_import
 import json
+import progressio.context_processor as context
 
 GLOBAL_PATH = 'progressio/'
 
@@ -87,6 +88,7 @@ def affinecipherencrypt(request):
 
 
 def affinecipherdecrypt(request):
+	context.title = 'Affine Cipher Decrypt'
 	if request.method == 'POST':
 		form = AffineCipherForm(request.POST)
 		if form.is_valid():
@@ -98,7 +100,7 @@ def affinecipherdecrypt(request):
 	else:
 		form = AffineCipherForm()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/affinecipherencrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/affinecipherdecrypt.html', {'form': form})
 
 
 def bifidencrypt(request):

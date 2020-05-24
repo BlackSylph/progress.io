@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    <h1>Enigma Machine</h1>
+    <h1>{{page_title}}</h1>
 
     <div class="container">
       <div class="row">
@@ -12,6 +12,16 @@
         </div>
         <div class="col-sm-8">
           <div>
+
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-success active">
+                <input type="radio" name="options" id="option1" autocomplete="off" checked> Encrypt
+              </label>
+              <label class="btn btn-outline-danger">
+                <input type="radio" name="options" id="option2" autocomplete="off"> Decrypt
+              </label>
+            </div>
+
             <form method="post">
               {% csrf_token %}
               {{ form.input_string|as_crispy_field }}
@@ -26,7 +36,7 @@
               </div>
 
               <div class="text-center">
-                <button type="submit" class="btn btn-primary">Calculate</button>
+                <button type="submit" class="btn btn-primary">{{calculate}}</button>
               </div>
 
               {{ form.output_string|as_crispy_field }}
