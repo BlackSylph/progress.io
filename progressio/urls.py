@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from .Views.Globals import views as Globals
 from .Views.StringTransforms import views as StringTransforms
 from .Views.EncodingDecoding import views as EncodingDecoding
-from .Views.Globals import views as Globals
 from .Views.Cryptography import views as Cryptography
 
 handler404 = Globals.handler404
@@ -61,6 +61,8 @@ urlpatterns = [
     path('a1z26cipherdecrypt', Cryptography.a1z26cipherdecrypt, name='a1z26cipherdecrypt'),
     path('vigenerecipherencrypt', Cryptography.vigenerecipherencrypt, name='vigenerecipherencrypt'),
     path('vigenerecipherdecrypt', Cryptography.vigenerecipherdecrypt, name='vigenerecipherdecrypt'),
+    path('baconcipherencrypt', Cryptography.baconcipherencrypt, name='baconcipherencrypt'),
+    path('baconcipherdecrypt', Cryptography.baconcipherdecrypt, name='baconcipherdecrypt'),
     path('hashfunction', Cryptography.hashfunction, name='hashfunction'),
     path('hmac', Cryptography.hmac, name='hmac'),
     path('tapcodeencrypt', Cryptography.tapcodeencrypt, name='tapcodeencrypt'),

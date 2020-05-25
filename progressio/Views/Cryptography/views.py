@@ -1,6 +1,4 @@
-from django.http import HttpResponse
 from django.shortcuts import render
-from base64 import b64encode, b64decode
 
 from progressio.forms import CaesarCipherForm, StringForm, StringParameterForm
 from progressio.forms import EnigmaMachineForm
@@ -13,8 +11,8 @@ from progressio.forms import AesForm
 from progressio.forms import TapForm
 
 from python_enigma import enigma
-from Crypto.Cipher import ARC4
-from Crypto.Cipher import AES
+#from Crypto.Cipher import ARC4
+#from Crypto.Cipher import AES
 from secretpy import Trifid, Nihilist, alphabets, CryptMachine
 from secretpy.cmdecorators import UpperCase, SaveSpaces, NoSpaces
 
@@ -198,6 +196,32 @@ def vigenerecipherdecrypt(request):
 		form = StringParameterForm()
 
 	return render(request, GLOBAL_PATH + 'Cryptography/vigenerecipherdecrypt.html', {'form': form})
+
+
+def baconcipherencrypt(request):
+	if request.method == 'POST':
+		form = StringForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			form.cleaned_data['output_string'] = bacon_encrypt(plaintext)
+			form = StringForm(form.cleaned_data)
+	else:
+		form = StringForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/baconcipherencrypt.html', {'form': form})
+
+
+def baconcipherdecrypt(request):
+	if request.method == 'POST':
+		form = StringForm(request.POST)
+		if form.is_valid():
+			plaintext = form.cleaned_data.get('input_string')
+			form.cleaned_data['output_string'] = bacon_decrypt(plaintext)
+			form = StringForm(form.cleaned_data)
+	else:
+		form = StringForm()
+
+	return render(request, GLOBAL_PATH + 'Cryptography/baconcipherdecrypt.html', {'form': form})
 
 
 def hashfunction(request):
@@ -452,6 +476,41 @@ def aesdecrypt(request):
 '''
 HELPER FUNCTIONS
 '''
+
+
+def bacon_encrypt(plaintext):
+	plaintext = plaintext.lower()  # Format to Lowercase
+	plaintext = plaintext.replace('j', 'i')
+	plaintext = plaintext.replace('v', 'u')
+	ciphertext = ''
+	for letter in plaintext:
+		bin_value = format(ord(letter) - 97, 'b')
+		value = ''
+		for i in range(0, 5 - len(bin_value)):
+			value += 'a'
+		value += bin_value
+		value = value.replace('0', 'a')
+		value = value.replace('1', 'b')
+		ciphertext = ciphertext + ' ' + value
+	return ciphertext
+
+
+def bacon_decrypt(ciphertext):
+	ciphertext = ciphertext.lower()  # Format to Lowercase
+
+	# A/B to 0/1 conversion
+	plaintext = ciphertext.replace(' ', '')
+	plaintext = plaintext.replace('a', '0')
+	plaintext = plaintext.replace('b', '1')
+	bin_list = []
+	for i in range(0, len(plaintext), 5):
+		bin_letter = plaintext[i:i + 5]
+		bin_list.append(bin_letter)
+
+	plaintext = ' '
+	for item in bin_list:
+		plaintext += chr(int(item, 2) + 97)
+	return plaintext
 
 
 def hash_based_on_input(func, input):
