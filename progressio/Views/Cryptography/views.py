@@ -29,6 +29,7 @@ REQUESTS
 
 
 def caesarcipher(request):
+	context.title = 'Caesar Cipher'
 	if request.method == 'POST':
 		form = CaesarCipherForm(request.POST)
 		if form.is_valid():
@@ -144,6 +145,7 @@ def a1z26cipher(request):
 
 
 def vigenerecipher(request):
+	context.title = 'Vigenère Cipher'
 	if request.method == 'POST':
 		form = StringParameterForm(request.POST)
 		if form.is_valid():
@@ -181,6 +183,7 @@ def baconcipher(request):
 
 
 def hashfunction(request):
+	context.title = 'Hash Function'
 	if request.method == 'POST':
 		form = HashFunctionForm(request.POST)
 		if form.is_valid():
@@ -195,6 +198,7 @@ def hashfunction(request):
 
 
 def hmac(request):
+	context.title = 'HMAC'
 	if request.method == 'POST':
 		form = HmacForm(request.POST)
 		if form.is_valid():
@@ -253,6 +257,7 @@ def nihilistcipher(request):
 
 
 def trifidcipher(request):
+	context.title = 'Trifid Cipher'
 	if request.method == 'POST':
 		form = BifidCipherForm(request.POST)
 		if form.is_valid():
@@ -289,6 +294,7 @@ def trifidcipher(request):
 
 # RC4 and AES are wrong, need to recheck
 def rc4cipher(request):
+	context.title = 'RC4'
 	if request.method == 'POST':
 		form = RC4Form(request.POST)  # Use bifid cipher here because both only need an input, key and output string
 		if form.is_valid():
@@ -476,18 +482,22 @@ def a1z26_decrypt(ciphertext):
 
 
 def caesarcipherencrypt(plaintext, shift):
-	result = ""
-	# transverse the plain text
-	for i in range(len(plaintext)):
-		char = plaintext[i]
-		# Encrypt uppercase characters in plain text
+	final = []
+	# transverse the plain text after accounting for spaces
+	for word in plaintext.split():
+		result = ""
+		for i in range(len(word)):
+			char = word[i]
+			# Encrypt uppercase characters in plain text
 
-		if char.isupper():
-			result += chr((ord(char) + shift - 65) % 26 + 65)
-		# Encrypt lowercase characters in plain text
-		else:
-			result += chr((ord(char) + shift - 97) % 26 + 97)
-	return result
+			if char.isupper():
+				result += chr((ord(char) + shift - 65) % 26 + 65)
+			# Encrypt lowercase characters in plain text
+			else:
+				result += chr((ord(char) + shift - 97) % 26 + 97)
+		final.append(result)
+
+	return ' '.join(final)
 
 
 # Extended Euclidean Algorithm for finding modular inverse

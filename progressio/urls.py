@@ -36,7 +36,6 @@ urlpatterns = [
     path('rgbtohex', EncodingDecoding.rgbtohex, name='rgbtohex'),
     path('base64encode', EncodingDecoding.base64encode, name='base64encode'),
     path('base64decode', EncodingDecoding.base64decode, name='base64decode'),
-    path('base32/encode', EncodingDecoding.base32encode, name='base32/encode'),
     path('base32encode', EncodingDecoding.base32encode, name='base32encode'),
     path('base32decode', EncodingDecoding.base32decode, name='base32decode'),
     path('stringtohex', EncodingDecoding.stringtohex, name='stringtohex'),
@@ -51,6 +50,7 @@ urlpatterns = [
     path('binarytodecimal', EncodingDecoding.binarytodecimal, name='binarytodecimal'),
     path('decimaltohex', EncodingDecoding.decimaltohex, name='decimaltohex'),
     path('hextodecimal', EncodingDecoding.hextodecimal, name='hextodecimal'),
+    # CIPHER FUNCTIONS START HERE
     path('caesarcipher', Cryptography.caesarcipher, name='caesarcipher'),
     path('enigmamachine', Cryptography.enigmamachine, name='enigmamachine'),
     path('affinecipher', Cryptography.affinecipher, name='affinecipher'),
