@@ -1,0 +1,7 @@
+{% extends 'progressio/Cryptography/_baseencryptdecryptform.html' %}
+{% load crispy_forms_tags %}
+
+{% block parameters %}
+    {{ form.mode|as_crispy_field }}
+    {{ form.key|as_crispy_field }}
+{% endblock %}

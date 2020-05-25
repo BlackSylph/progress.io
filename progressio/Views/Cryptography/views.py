@@ -70,65 +70,45 @@ def enigmamachine(request):
 	return render(request, GLOBAL_PATH + 'Cryptography/enigmamachine.html', {'form': form})
 
 
-def affinecipherencrypt(request):
+def affinecipher(request):
+	context.title = 'Affine Cipher'
+
 	if request.method == 'POST':
 		form = AffineCipherForm(request.POST)
 		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string')
+			inputtext = form.cleaned_data.get('input_string')
 			a = int(form.cleaned_data.get('slope'))
 			b = int(form.cleaned_data.get('intercept'))
-			form.cleaned_data['output_string'] = affine_encrypt(plaintext, [a, b])
+
+			if request.POST.get('operation') == 'Encrypt':
+				form.cleaned_data['output_string'] = affine_encrypt(inputtext, [a, b])
+			elif request.POST.get('operation') == 'Decrypt':
+				form.cleaned_data['output_string'] = affine_decrypt(inputtext, [a, b])
 			form = AffineCipherForm(form.cleaned_data)
 	else:
 		form = AffineCipherForm()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/affinecipherencrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/affinecipher.html', {'form': form})
 
 
-def affinecipherdecrypt(request):
-	context.title = 'Affine Cipher Decrypt'
-	if request.method == 'POST':
-		form = AffineCipherForm(request.POST)
-		if form.is_valid():
-			ciphertext = form.cleaned_data.get('input_string')
-			a = int(form.cleaned_data.get('slope'))
-			b = int(form.cleaned_data.get('intercept'))
-			form.cleaned_data['output_string'] = affine_decrypt(ciphertext, [a, b])
-			form = AffineCipherForm(form.cleaned_data)
-	else:
-		form = AffineCipherForm()
-
-	return render(request, GLOBAL_PATH + 'Cryptography/affinecipherdecrypt.html', {'form': form})
-
-
-def bifidencrypt(request):
+def bifidcipher(request):
+	context.title = 'Bifid Cipher'
 	if request.method == 'POST':
 		form = BifidCipherForm(request.POST)
 		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string')
+			inputtext = form.cleaned_data.get('input_string')
 			key = form.cleaned_data.get('key')
 			table = buildpolybiussquare(key)
-			form.cleaned_data['output_string'] = bifidencryptmessage(table, plaintext)
+
+			if request.POST.get('operation') == 'Encrypt':
+				form.cleaned_data['output_string'] = bifidencryptmessage(table, inputtext)
+			elif request.POST.get('operation') == 'Decrypt':
+				form.cleaned_data['output_string'] = bifiddecryptmessage(table, inputtext)
 			form = BifidCipherForm(form.cleaned_data)
 	else:
 		form = BifidCipherForm()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/bifidencrypt.html', {'form': form})
-
-
-def bifiddecrypt(request):
-	if request.method == 'POST':
-		form = BifidCipherForm(request.POST)
-		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string')
-			key = form.cleaned_data.get('key')
-			table = buildpolybiussquare(key)
-			form.cleaned_data['output_string'] = bifiddecryptmessage(table, plaintext)
-			form = BifidCipherForm(form.cleaned_data)
-	else:
-		form = BifidCipherForm()
-
-	return render(request, GLOBAL_PATH + 'Cryptography/bifiddecrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/bifidcipher.html', {'form': form})
 
 
 def rot13cipher(request):
@@ -144,84 +124,60 @@ def rot13cipher(request):
 	return render(request, GLOBAL_PATH + 'Cryptography/rot13cipher.html', {'form': form})
 
 
-def a1z26cipherencrypt(request):
+def a1z26cipher(request):
+	context.title = 'A1Z26 Cipher'
 	if request.method == 'POST':
 		form = StringForm(request.POST)
 		if form.is_valid():
 			plaintext = form.cleaned_data.get('input_string')
-			form.cleaned_data['output_string'] = a1z26_encrypt(plaintext)
+
+			if request.POST.get('operation') == 'Encrypt':
+				form.cleaned_data['output_string'] = a1z26_encrypt(plaintext)
+			elif request.POST.get('operation') == 'Decrypt':
+				form.cleaned_data['output_string'] = a1z26_decrypt(plaintext)
+
 			form = StringForm(form.cleaned_data)
 	else:
 		form = StringForm()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/a1z26cipherencrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/a1z26cipher.html', {'form': form})
 
 
-def a1z26cipherdecrypt(request):
-	if request.method == 'POST':
-		form = StringForm(request.POST)
-		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string')
-			form.cleaned_data['output_string'] = a1z26_decrypt(plaintext)
-			form = StringForm(form.cleaned_data)
-	else:
-		form = StringForm()
-
-	return render(request, GLOBAL_PATH + 'Cryptography/a1z26cipherdecrypt.html', {'form': form})
-
-
-def vigenerecipherencrypt(request):
+def vigenerecipher(request):
 	if request.method == 'POST':
 		form = StringParameterForm(request.POST)
 		if form.is_valid():
 			plaintext = form.cleaned_data.get('input_string')
 			key = form.cleaned_data.get('input_parameter')
-			form.cleaned_data['output_string'] = vigenere_encrypt(plaintext, key)
+
+			if request.POST.get('operation') == 'Encrypt':
+				form.cleaned_data['output_string'] = vigenere_encrypt(plaintext, key)
+			elif request.POST.get('operation') == 'Decrypt':
+				form.cleaned_data['output_string'] = vigenere_decrypt(plaintext, key)
+
 			form = StringParameterForm(form.cleaned_data)
 	else:
 		form = StringParameterForm()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/vigenerecipherencrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/vigenerecipher.html', {'form': form})
 
 
-def vigenerecipherdecrypt(request):
-	if request.method == 'POST':
-		form = StringParameterForm(request.POST)
-		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string')
-			key = form.cleaned_data.get('input_parameter')
-			form.cleaned_data['output_string'] = vigenere_decrypt(plaintext, key)
-			form = StringParameterForm(form.cleaned_data)
-	else:
-		form = StringParameterForm()
+def baconcipher(request):
+	context.title = 'Bacon Cipher'
 
-	return render(request, GLOBAL_PATH + 'Cryptography/vigenerecipherdecrypt.html', {'form': form})
-
-
-def baconcipherencrypt(request):
 	if request.method == 'POST':
 		form = StringForm(request.POST)
 		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string')
-			form.cleaned_data['output_string'] = bacon_encrypt(plaintext)
+			inputtext = form.cleaned_data.get('input_string')
+			if request.POST.get('operation') == 'Encrypt':
+				form.cleaned_data['output_string'] = bacon_encrypt(inputtext)
+			elif request.POST.get('operation') == 'Decrypt':
+				form.cleaned_data['output_string'] = bacon_decrypt(inputtext)
 			form = StringForm(form.cleaned_data)
 	else:
 		form = StringForm()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/baconcipherencrypt.html', {'form': form})
-
-
-def baconcipherdecrypt(request):
-	if request.method == 'POST':
-		form = StringForm(request.POST)
-		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string')
-			form.cleaned_data['output_string'] = bacon_decrypt(plaintext)
-			form = StringForm(form.cleaned_data)
-	else:
-		form = StringForm()
-
-	return render(request, GLOBAL_PATH + 'Cryptography/baconcipherdecrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/baconcipher.html', {'form': form})
 
 
 def hashfunction(request):
@@ -253,96 +209,54 @@ def hmac(request):
 	return render(request, GLOBAL_PATH + 'Cryptography/hmac.html', {'form': form})
 
 
-def tapcodeencrypt(request):
+def tapcodecipher(request):
+	context.title = 'Tapcode Cipher'
 	if request.method == 'POST':
 		form = TapForm(request.POST)
 		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string').upper()
 			tap = form.cleaned_data.get('tap')
 			table = buildpolybiussquare(None, 'ABCDEFGHIJLMNOPQRSTUVWXYZ')
-			ciphertext = ''
-			print(table)
-			for char in plaintext:
-				for i, sub_list in enumerate(table):
-					if char in sub_list:
-						ciphertext += tap * (i + 1)
-						ciphertext += ' '
-						ciphertext += tap * (sub_list.index(char) + 1)
-						ciphertext += ' '
 
-			form.cleaned_data['output_string'] = ciphertext
+			if request.POST.get('operation') == 'Encrypt':
+				inputtext = form.cleaned_data.get('input_string').upper()
+				form.cleaned_data['output_string'] = tapcodeencrypt(inputtext, table, tap)
+			elif request.POST.get('operation') == 'Decrypt':
+				inputtext = form.cleaned_data.get('input_string').split(' ')
+				form.cleaned_data['output_string'] = tapcodedecrypt(inputtext, table)
+			print(form.cleaned_data['output_string'])
 			form = TapForm(form.cleaned_data)
 	else:
 		form = TapForm()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/tapcodeencrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/tapcodecipher.html', {'form': form})
 
 
-def pairwise(iterable):
-	a = iter(iterable)
-	return zip(a, a)
-
-
-def tapcodedecrypt(request):
-	if request.method == 'POST':
-		form = TapForm(request.POST)
-		if form.is_valid():
-			ciphertext = form.cleaned_data.get('input_string').split(' ')
-			tap = form.cleaned_data.get('tap')
-			table = buildpolybiussquare(None, 'ABCDEFGHIJLMNOPQRSTUVWXYZ')
-
-			plaintext = ''
-			for x, y in pairwise(ciphertext):
-				plaintext += table[len(x)-1][len(y)-1]
-
-			form.cleaned_data['output_string'] = plaintext
-			form = TapForm(form.cleaned_data)
-	else:
-		form = TapForm()
-
-	return render(request, GLOBAL_PATH + 'Cryptography/tapcodedecrypt.html', {'form': form})
-
-
-def nihilistencrypt(request):
+def nihilistcipher(request):
+	context.title = 'Nihilist Cipher'
 	if request.method == 'POST':
 		form = BifidCipherForm(request.POST)
 		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string')
+			inputtext = form.cleaned_data.get('input_string')
 			key = form.cleaned_data.get('key')
 			cipher = Nihilist()
 			cm = CryptMachine(cipher, key)
-			cm = SaveSpaces(cm)
-			alphabet = alphabets.ENGLISH
-			form.cleaned_data['output_string'] = cm.encrypt(plaintext)
+
+			if request.POST.get('operation') == 'Encrypt':
+				form.cleaned_data['output_string'] = cm.encrypt(inputtext)
+			elif request.POST.get('operation') == 'Decrypt':
+				form.cleaned_data['output_string'] = cm.decrypt(inputtext)
 			form = BifidCipherForm(form.cleaned_data)
 	else:
 		form = BifidCipherForm()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/nihilistencrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/nihilistcipher.html', {'form': form})
 
 
-def nihilistdecrypt(request):
+def trifidcipher(request):
 	if request.method == 'POST':
 		form = BifidCipherForm(request.POST)
 		if form.is_valid():
-			ciphertext = form.cleaned_data.get('input_string')
-			key = form.cleaned_data.get('key')
-			cipher = Nihilist()
-			cm = CryptMachine(cipher, key)
-			alphabet = alphabets.ENGLISH
-			form.cleaned_data['output_string'] = cm.decrypt(ciphertext)
-			form = BifidCipherForm(form.cleaned_data)
-	else:
-		form = BifidCipherForm()
-
-	return render(request, GLOBAL_PATH + 'Cryptography/nihilistdecrypt.html', {'form': form})
-
-
-def trifidencrypt(request):
-	if request.method == 'POST':
-		form = BifidCipherForm(request.POST)
-		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string')
+			inputtext = form.cleaned_data.get('input_string')
 			key = 5
 			cipher = Trifid()
 			cm = CryptMachine(cipher, key)
@@ -362,63 +276,19 @@ def trifidencrypt(request):
 			]
 
 			cm.set_alphabet(alphabet)
-			form.cleaned_data['output_string'] = cm.encrypt(plaintext)
+			if request.POST.get('operation') == 'Encrypt':
+				form.cleaned_data['output_string'] = cm.encrypt(inputtext)
+			elif request.POST.get('operation') == 'Decrypt':
+				form.cleaned_data['output_string'] = cm.decrypt(inputtext)
 			form = BifidCipherForm(form.cleaned_data)
 	else:
 		form = BifidCipherForm()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/trifidencrypt.html', {'form': form})
-
-
-def trifiddecrypt(request):
-	if request.method == 'POST':
-		form = BifidCipherForm(request.POST)
-		if form.is_valid():
-			ciphertext = form.cleaned_data.get('input_string')
-			key = 5
-			cipher = Trifid()
-			cm = CryptMachine(cipher, key)
-
-			alphabet = [
-				u"e", u"p", u"s",
-				u"d", u"u", u"c",
-				u"v", u"w", u"y",
-
-				u"m", u".", u"z",
-				u"l", u"k", u"x",
-				u"n", u"b", u"t",
-
-				u"f", u"g", u"o",
-				u"r", u"i", u"j",
-				u"h", u"a", u"q",
-			]
-
-			cm.set_alphabet(alphabet)
-			form.cleaned_data['output_string'] = cm.encrypt(ciphertext)
-			form = BifidCipherForm(form.cleaned_data)
-	else:
-		form = BifidCipherForm()
-
-	return render(request, GLOBAL_PATH + 'Cryptography/trifiddecrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/trifid.html', {'form': form})
 
 
 # RC4 and AES are wrong, need to recheck
-def rc4encrypt(request):
-	if request.method == 'POST':
-		form = RC4Form(request.POST)  # Use bifid cipher here because both only need an input, key and output string
-		if form.is_valid():
-			plaintext = form.cleaned_data.get('input_string').encode()
-			key = form.cleaned_data.get('key').encode()
-			arc4 = ARC4.new(key)
-			form.cleaned_data['output_string'] = arc4.encrypt(plaintext).hex()
-			form = RC4Form(form.cleaned_data)
-	else:
-		form = RC4Form()
-
-	return render(request, GLOBAL_PATH + 'Cryptography/rc4encrypt.html', {'form': form})
-
-
-def rc4decrypt(request):
+def rc4cipher(request):
 	if request.method == 'POST':
 		form = RC4Form(request.POST)  # Use bifid cipher here because both only need an input, key and output string
 		if form.is_valid():
@@ -430,52 +300,60 @@ def rc4decrypt(request):
 	else:
 		form = RC4Form()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/rc4decrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/rc4.html', {'form': form})
 
 
-def aesencrypt(request):
+def aes(request):
+	context.title = 'AES'
 	if request.method == 'POST':
 		form = AesForm(request.POST)  # Use bifid cipher here because both only need an input, key and output string
 		if form.is_valid():
+			inputtext = form.cleaned_data.get('input_string').encode()
+			key = form.cleaned_data.get('key').encode()
 			iv = 'IVIVIVIVIVIVIVIV'
 			iv = str.encode(iv)
-
-			plaintext = form.cleaned_data.get('input_string')
-			plaintext = str.encode(plaintext)
-			plaintext = plaintext + (AES.block_size - (len(plaintext) % AES.block_size)) * b'\x00'
-
-			key = form.cleaned_data.get('key')
-			key = str.encode(key)
-
 			aes = AES.new(key, AES.MODE_CBC, iv)
-			ciphertext = aes.encrypt(plaintext)
 
-			form.cleaned_data['output_string'] = ciphertext.hex()
+			if request.POST.get('operation') == 'Encrypt':
+				inputtext = inputtext + (AES.block_size - (len(inputtext) % AES.block_size)) * b'\x00'
+				ciphertext = aes.encrypt(inputtext)
+				form.cleaned_data['output_string'] = ciphertext.hex()
+			elif request.POST.get('operation') == 'Decrypt':
+				form.cleaned_data['output_string'] = aes.decrypt(inputtext).hex()
 			form = AesForm(form.cleaned_data)
 	else:
 		form = AesForm()
 
-	return render(request, GLOBAL_PATH + 'Cryptography/aesencrypt.html', {'form': form})
-
-
-def aesdecrypt(request):
-	if request.method == 'POST':
-		form = AesForm(request.POST)  # Use bifid cipher here because both only need an input, key and output string
-		if form.is_valid():
-			ciphertext = form.cleaned_data.get('input_string').encode()
-			key = form.cleaned_data.get('key').encode()
-			arc4 = ARC4.new(key)
-			form.cleaned_data['output_string'] = arc4.decrypt(ciphertext).hex()
-			form = AesForm(form.cleaned_data)
-	else:
-		form = AesForm()
-
-	return render(request, GLOBAL_PATH + 'Cryptography/aesdecrypt.html', {'form': form})
+	return render(request, GLOBAL_PATH + 'Cryptography/aes.html', {'form': form})
 
 
 '''
 HELPER FUNCTIONS
 '''
+def tapcodeencrypt(inputtext, table, tap):
+	outputtext = ''
+	for char in inputtext:
+
+		for i, sub_list in enumerate(table):
+			if char in sub_list:
+				outputtext += tap * (i + 1)
+				outputtext += ' '
+				outputtext += tap * (sub_list.index(char) + 1)
+				outputtext += ' '
+
+	return outputtext
+
+
+def tapcodedecrypt(inputtext, table):
+	outputtext = ''
+	for x, y in pairwise(inputtext):
+		outputtext += table[len(x) - 1][len(y) - 1]
+	return outputtext
+
+
+def pairwise(iterable):
+	a = iter(iterable)
+	return zip(a, a)
 
 
 def bacon_encrypt(plaintext):

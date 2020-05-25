@@ -1,0 +1,13 @@
+{% extends 'progressio/Cryptography/_baseencryptdecryptform.html' %}
+{% load crispy_forms_tags %}
+
+{% block parameters %}
+    <div class="row">
+        <div class="col-sm-6">
+            {{ form.slope|as_crispy_field }}
+        </div>
+        <div class="col-sm-6">
+            {{ form.intercept|as_crispy_field }}
+        </div>
+    </div>
+{% endblock %}
