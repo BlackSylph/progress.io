@@ -5,6 +5,7 @@
 .idea/modules.xml
 .idea/progressio.iml
 .idea/vcs.xml
-venv/
+venv/Lib/
+venv/pyvenv.cfg
 progressio/__pycache__/
 *.pyc
