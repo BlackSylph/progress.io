@@ -113,6 +113,7 @@ def bifidcipher(request):
 
 
 def rot13cipher(request):
+	context.title = 'ROT13 Cipher'
 	if request.method == 'POST':
 		form = StringForm(request.POST)
 		if form.is_valid():
