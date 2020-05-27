@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from progressio.forms import *
+import progressio.context_processor as context
 
 GLOBAL_PATH = 'progressio/'
 
@@ -9,31 +10,28 @@ def index(request):
     return render(request, GLOBAL_PATH + 'index.html')
 
 
-def stringuppercase(request):
+def string_basic_manipulation(request):
+    context.title = 'String Basic Manipulation'
+
     if request.method == 'POST':
         form = StringForm(request.POST)
         if form.is_valid():
-            form.cleaned_data['output_string'] = form.cleaned_data.get('input_string').upper()
+            if request.POST.get('operation') == 'Uppercase':
+                form.cleaned_data['output_string'] = form.cleaned_data.get('input_string').upper()
+            elif request.POST.get('operation') == 'Lowercase':
+                form.cleaned_data['output_string'] = form.cleaned_data.get('input_string').lower()
+            elif request.POST.get('operation') == 'Reverse':
+                form.cleaned_data['output_string'] = form.cleaned_data.get('input_string')[::-1]
             form = StringForm(form.cleaned_data)
     else:
         form = StringForm()
 
-    return render(request, GLOBAL_PATH + 'StringTransforms/stringuppercase.html', {'form': form})
+    return render(request, GLOBAL_PATH + 'StringTransforms/stringbasicmanipulation.html', {'form': form})
 
 
-def stringlowercase(request):
-    if request.method == 'POST':
-        form = StringForm(request.POST)
-        if form.is_valid():
-            form.cleaned_data['output_string'] = form.cleaned_data.get('input_string').lower()
-            form = StringForm(form.cleaned_data)
-    else:
-        form = StringForm()
+def string_length(request):
+    context.title = 'String Length'
 
-    return render(request, GLOBAL_PATH + 'StringTransforms/stringlowercase.html', {'form': form})
-
-
-def stringlength(request):
     if request.method == 'POST':
         form = StringForm(request.POST)
         if form.is_valid():
@@ -45,19 +43,9 @@ def stringlength(request):
     return render(request, GLOBAL_PATH + 'StringTransforms/stringlength.html', {'form': form})
 
 
-def stringreverse(request):
-    if request.method == 'POST':
-        form = StringForm(request.POST)
-        if form.is_valid():
-            form.cleaned_data['output_string'] = form.cleaned_data.get('input_string')[::-1]
-            form = StringForm(form.cleaned_data)
-    else:
-        form = StringForm()
+def substring_occurrence(request):
+    context.title = 'String Occurrence'
 
-    return render(request, GLOBAL_PATH + 'StringTransforms/stringreverse.html', {'form': form})
-
-
-def substringoccurrence(request):
     if request.method == 'POST':
         form = StringParameterForm(request.POST)
         if form.is_valid():
@@ -69,7 +57,9 @@ def substringoccurrence(request):
     return render(request, GLOBAL_PATH + 'StringTransforms/substringoccurence.html', {'form': form})
 
 
-def wordcounter(request):
+def word_counter(request):
+    context.title = 'Word Counter'
+
     if request.method == 'POST':
         form = StringForm(request.POST)
         if form.is_valid():

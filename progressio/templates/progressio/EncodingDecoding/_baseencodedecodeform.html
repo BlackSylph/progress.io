@@ -18,8 +18,9 @@
                         {% block parameters %}
                         {% endblock %}
 
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Calculate</button>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <input type="submit" name="operation" value="Encode" class="btn btn-success"/>
+                            <input type="submit" name="operation" value="Decode" class="btn btn-danger"/>
                         </div>
 
                         {{ form.output_string|as_crispy_field }}
