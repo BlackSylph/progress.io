@@ -7,7 +7,7 @@ import logging
 GLOBAL_PATH = 'progressio/'
 
 # Get an instance of a logger
-logger = logging.getLogger('django')
+logger = logging.getLogger('django.request')
 
 
 def index(request):
@@ -17,7 +17,7 @@ def index(request):
 
 def string_basic_manipulation(request):
 	context.title = 'String Basic Manipulation'
-	logger.info('User visited string basic manipulation')
+	logger.error('User visited string basic manipulation')
 
 	if request.method == 'POST':
 		form = StringForm(request.POST)

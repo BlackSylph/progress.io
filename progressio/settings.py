@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import logstash_formatter
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -36,7 +37,14 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'crispy_forms',
+	'django_elasticsearch_dsl',
 ]
+
+ELASTICSEARCH_DSL = {
+	'default': {
+		'hosts': 'localhost:9200'
+	},
+}
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -135,8 +143,24 @@ LOGGING = {
 			'filename': os.path.join(BASE_DIR, 'logs/progressio.log'),
 			'formatter': 'verbose'
 		},
+		'logstash': {
+			'level': 'ERROR',
+			'class': 'logstash.TCPLogstashHandler',
+			'host': 'localhost',
+			'port': 5959,  # Default value: 5959
+			'version': 1,
+			# Version of logstash event schema. Default value: 0 (for backward compatibility of the library)
+			'message_type': 'django',  # 'type' field in logstash message. Default value: 'logstash'.
+			'fqdn': False,  # Fully qualified domain name. Default value: false.
+			'tags': ['django.request'],  # list of tags. Default: None.
+		},
 	},
 	'loggers': {
+		'django.request': {
+			'handlers': ['logstash'],
+			'level': 'ERROR',
+			'propagate': True,
+		},
 		'django': {
 			'handlers': ['file'],
 			'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
