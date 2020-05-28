@@ -493,12 +493,14 @@ def caesar_cipher_encrypt(plaintext, shift):
         for i in range(len(word)):
             char = word[i]
             # Encrypt uppercase characters in plain text
-
-            if char.isupper():
-                result += chr((ord(char) + shift - 65) % 26 + 65)
-            # Encrypt lowercase characters in plain text
+            if word[i] in '!@#$%^&*()_+|\][}{\'":;/?.>,<1234567890':
+                result += word[i]
             else:
-                result += chr((ord(char) + shift - 97) % 26 + 97)
+                if char.isupper():
+                    result += chr((ord(char) + shift - 65) % 26 + 65)
+                # Encrypt lowercase characters in plain text
+                else:
+                    result += chr((ord(char) + shift - 97) % 26 + 97)
         final.append(result)
 
     return ' '.join(final)

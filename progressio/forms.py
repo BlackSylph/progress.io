@@ -6,6 +6,12 @@ class BaseForm(forms.Form):
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
+# Since crypto is harder in other alphabets, we should extend this class that has the validator_string_is_english method
+# for encryption/decryption forms until we extend functionality to other alphabets
+class CryptoForm(BaseForm):
+	input_string = forms.CharField(widget=forms.Textarea(attrs={"rows": 5}), validators=[validator_string_is_english])
+
+
 class StringForm(BaseForm):
 	pass
 
@@ -26,7 +32,7 @@ class StringRGBInputForm(BaseForm):
 	output_string = forms.CharField(required=False, widget=forms.Textarea(attrs={"rows": 5, "readonly": True}))
 
 
-class CaesarCipherForm(BaseForm):
+class CaesarCipherForm(CryptoForm):
 	CAESAR_CIPHER_AVAILABLE_SHIFTS = [
 		(1, 1), (2, 2),
 		(3, 3), (4, 4),

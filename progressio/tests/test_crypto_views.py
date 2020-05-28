@@ -30,3 +30,11 @@ class CaesarCipherCases(TestCase):
         self.assertEqual(Cryptography.caesar_cipher_encrypt('Sample Text', 23), 'Pxjmib Qbuq')
         self.assertEqual(Cryptography.caesar_cipher_encrypt('Sample Text', 24), 'Qyknjc Rcvr')
         self.assertEqual(Cryptography.caesar_cipher_encrypt('Sample Text', 25), 'Rzlokd Sdws')
+
+    def testSpecialCharacters(self):
+        self.assertEqual(Cryptography.caesar_cipher_encrypt('!@#$%^&*()_+|\][}{\'":;/?.>,<', 1),
+                         '!@#$%^&*()_+|\][}{\'":;/?.>,<')
+
+    def testMixed(self):
+        self.assertEqual(Cryptography.caesar_cipher_encrypt('a1!b2@c3#d4$e5%f6^g7&h8*i9(j0)', 2),
+                         'c1!d2@e3#f4$g5%h6^i7&j8*k9(l0)')
