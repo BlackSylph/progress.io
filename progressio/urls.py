@@ -20,8 +20,8 @@ from .Views.StringTransforms import views as StringTransforms
 from .Views.EncodingDecoding import views as EncodingDecoding
 from .Views.Cryptography import views as Cryptography
 
-handler404 = Globals.handler404
-handler500 = Globals.handler500
+handler404 = Globals.handler_404
+handler500 = Globals.handler_500
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -49,19 +49,19 @@ urlpatterns = [
     path('urlencode', EncodingDecoding.url_encode, name='urlencode'),
     path('urldecode', EncodingDecoding.url_decode, name='urldecode'),
     # CIPHER FUNCTIONS START HERE
-    path('caesarcipher', Cryptography.caesarcipher, name='caesarcipher'),
-    path('enigmamachine', Cryptography.enigmamachine, name='enigmamachine'),
-    path('affinecipher', Cryptography.affinecipher, name='affinecipher'),
-    path('bifidcipher', Cryptography.bifidcipher, name='bifidcipher'),
-    path('rot13cipher', Cryptography.rot13cipher, name='rot13cipher'),
-    path('a1z26cipher', Cryptography.a1z26cipher, name='a1z26cipher'),
-    path('vigenerecipher', Cryptography.vigenerecipher, name='vigenerecipher'),
-    path('baconcipher', Cryptography.baconcipher, name='baconcipher'),
-    path('hashfunction', Cryptography.hashfunction, name='hashfunction'),
+    path('caesarcipher', Cryptography.caesar_cipher, name='caesarcipher'),
+    path('enigmamachine', Cryptography.enigma_machine, name='enigmamachine'),
+    path('affinecipher', Cryptography.affine_cipher, name='affinecipher'),
+    path('bifidcipher', Cryptography.bifid_cipher, name='bifidcipher'),
+    path('rot13cipher', Cryptography.rot13_cipher, name='rot13cipher'),
+    path('a1z26cipher', Cryptography.a1z26_cipher, name='a1z26cipher'),
+    path('vigenerecipher', Cryptography.vigenere_cipher, name='vigenerecipher'),
+    path('baconcipher', Cryptography.bacon_cipher, name='baconcipher'),
+    path('hashfunction', Cryptography.hash_function, name='hashfunction'),
     path('hmac', Cryptography.hmac, name='hmac'),
-    path('tapcodecipher', Cryptography.tapcodecipher, name='tapcodecipher'),
-    path('nihilistcipher', Cryptography.nihilistcipher, name='nihilistcipher'),
-    path('trifid', Cryptography.trifidcipher, name='trifid'),
-    path('rc4', Cryptography.rc4cipher, name='rc4'),
+    path('tapcodecipher', Cryptography.tap_code_cipher, name='tapcodecipher'),
+    path('nihilistcipher', Cryptography.nihilist_cipher, name='nihilistcipher'),
+    path('trifid', Cryptography.trifid_cipher, name='trifid'),
+    path('rc4', Cryptography.rc4_cipher, name='rc4'),
     path('aes', Cryptography.aes, name='aes')
 ]
