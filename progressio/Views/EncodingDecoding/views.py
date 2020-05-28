@@ -123,7 +123,7 @@ def decimal_to_binary(request):
     else:
         form = StringForm()
 
-    return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urlencodedecode.html', {'form': form})
 
 
 def binary_to_decimal(request):
@@ -137,7 +137,7 @@ def binary_to_decimal(request):
     else:
         form = StringForm()
 
-    return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urlencodedecode.html', {'form': form})
 
 
 def decimal_to_hex(request):
@@ -151,7 +151,7 @@ def decimal_to_hex(request):
     else:
         form = StringForm()
 
-    return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urlencodedecode.html', {'form': form})
 
 
 def hex_to_decimal(request):
@@ -165,7 +165,7 @@ def hex_to_decimal(request):
     else:
         form = StringForm()
 
-    return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urlencodedecode.html', {'form': form})
 
 
 def hex_to_rgb(request):
@@ -203,58 +203,35 @@ def rgb_to_hex(request):
     return render(request, GLOBAL_PATH + 'EncodingDecoding/rgbtohex.html', {'form': form})
 
 
-def html_encode(request):
-    context.title = 'String HTML Encode'
+def html_encode_decode(request):
+    context.title = 'HTML Encode/Decode'
 
     if request.method == 'POST':
         form = StringForm(request.POST)
         if form.is_valid():
-            form.cleaned_data['output_string'] = html.escape(form.cleaned_data.get('input_string'))
+            if request.POST.get('operation') == 'Encode':
+                form.cleaned_data['output_string'] = html.escape(form.cleaned_data.get('input_string'))
+            if request.POST.get('operation') == 'Decode':
+                form.cleaned_data['output_string'] = html.unescape(form.cleaned_data.get('input_string'))
             form = StringForm(form.cleaned_data)
     else:
         form = StringForm()
 
-    return render(request, GLOBAL_PATH + 'EncodingDecoding/htmlencode.html', {'form': form})
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/htmlencodedecode.html', {'form': form})
 
 
-def html_decode(request):
-    context.title = 'String HTML Decode'
+def url_encode_decode(request):
+    context.title = 'URL Encode/Decode'
 
     if request.method == 'POST':
         form = StringForm(request.POST)
         if form.is_valid():
-            form.cleaned_data['output_string'] = html.unescape(form.cleaned_data.get('input_string'))
+            if request.POST.get('operation') == 'Encode':
+                form.cleaned_data['output_string'] = urllib.parse.quote(form.cleaned_data.get('input_string'), safe='')
+            if request.POST.get('operation') == 'Decode':
+                form.cleaned_data['output_string'] = urllib.parse.unquote(form.cleaned_data.get('input_string'))
             form = StringForm(form.cleaned_data)
     else:
         form = StringForm()
 
-    return render(request, GLOBAL_PATH + 'EncodingDecoding/htmldecode.html', {'form': form})
-
-
-def url_encode(request):
-    context.title = 'URL Encode'
-
-    if request.method == 'POST':
-        form = StringForm(request.POST)
-        if form.is_valid():
-            form.cleaned_data['output_string'] = urllib.parse.quote(form.cleaned_data.get('input_string'), safe='')
-            form = StringForm(form.cleaned_data)
-    else:
-        form = StringForm()
-
-    return render(request, GLOBAL_PATH + 'EncodingDecoding/urlencode.html', {'form': form})
-
-
-def url_decode(request):
-    context.title = 'URL Decode'
-
-    if request.method == 'POST':
-        form = StringForm(request.POST)
-        if form.is_valid():
-            form.cleaned_data['output_string'] = urllib.parse.unquote(form.cleaned_data.get('input_string'))
-            form = StringForm(form.cleaned_data)
-    else:
-        form = StringForm()
-
-    return render(request, GLOBAL_PATH + 'EncodingDecoding/urldecode.html', {'form': form})
-
+    return render(request, GLOBAL_PATH + 'EncodingDecoding/urlencodedecode.html', {'form': form})
