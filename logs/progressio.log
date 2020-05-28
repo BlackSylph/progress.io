@@ -1,0 +1,11 @@
+INFO 2020-05-28 15:57:59,656 views views.py 14 Sample Log
+INFO 2020-05-28 15:57:59,661 basehttp basehttp.py 157 "GET / HTTP/1.1" 200 5326
+INFO 2020-05-28 15:57:59,700 basehttp basehttp.py 157 "GET /progressio/static/progressio/style.css HTTP/1.1" 200 26
+WARNING 2020-05-28 15:58:00,008 log log.py 222 Not Found: /favicon.ico
+WARNING 2020-05-28 15:58:00,009 basehttp basehttp.py 157 "GET /favicon.ico HTTP/1.1" 404 6675
+ERROR 2020-05-28 15:58:19,709 views views.py 38 Something went wrong!
+INFO 2020-05-28 15:58:19,709 views views.py 39 Sample Log
+INFO 2020-05-28 15:58:19,739 basehttp basehttp.py 157 "GET /stringlength HTTP/1.1" 200 7076
+INFO 2020-05-28 15:58:19,791 basehttp basehttp.py 157 "GET /progressio/static/progressio/style.css HTTP/1.1" 304 0
+INFO 2020-05-28 16:00:57,655 autoreload autoreload.py 222 C:\Users\Dimitris\PycharmProjects\progressio\progressio\Views\StringTransforms\views.py changed, reloading.
+INFO 2020-05-28 16:00:58,510 autoreload autoreload.py 598 Watching for file changes with StatReloader

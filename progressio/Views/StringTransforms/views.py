@@ -2,16 +2,22 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from progressio.forms import *
 import progressio.context_processor as context
+import logging
 
 GLOBAL_PATH = 'progressio/'
 
+# Get an instance of a logger
+logger = logging.getLogger('django')
+
 
 def index(request):
+	logger.info('User visited index')
 	return render(request, GLOBAL_PATH + 'index.html')
 
 
 def string_basic_manipulation(request):
 	context.title = 'String Basic Manipulation'
+	logger.info('User visited string basic manipulation')
 
 	if request.method == 'POST':
 		form = StringForm(request.POST)
@@ -23,6 +29,8 @@ def string_basic_manipulation(request):
 			elif request.POST.get('operation') == 'Reverse':
 				form.cleaned_data['output_string'] = form.cleaned_data.get('input_string')[::-1]
 			form = StringForm(form.cleaned_data)
+		else:
+			logger.error('Submitted form is not valid')
 	else:
 		form = StringForm()
 
@@ -30,6 +38,7 @@ def string_basic_manipulation(request):
 
 
 def string_length(request):
+	logger.info('User visited string length')
 	context.title = 'String Length'
 
 	if request.method == 'POST':
