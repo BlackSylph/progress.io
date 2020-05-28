@@ -44,10 +44,8 @@ urlpatterns = [
     path('binarytodecimal', EncodingDecoding.binary_to_decimal, name='binarytodecimal'),
     path('decimaltohex', EncodingDecoding.decimal_to_hex, name='decimaltohex'),
     path('hextodecimal', EncodingDecoding.hex_to_decimal, name='hextodecimal'),
-    path('htmlencode', EncodingDecoding.html_encode, name='htmlencode'),
-    path('htmldecode', EncodingDecoding.html_decode, name='htmldecode'),
-    path('urlencode', EncodingDecoding.url_encode, name='urlencode'),
-    path('urldecode', EncodingDecoding.url_decode, name='urldecode'),
+    path('htmlencodedecode', EncodingDecoding.html_encode_decode, name='htmlencodedecode'),
+    path('urlencodedecode', EncodingDecoding.url_encode_decode, name='urlencodedecode'),
     # CIPHER FUNCTIONS START HERE
     path('caesarcipher', Cryptography.caesar_cipher, name='caesarcipher'),
     path('enigmamachine', Cryptography.enigma_machine, name='enigmamachine'),
